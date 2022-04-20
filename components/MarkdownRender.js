@@ -7,7 +7,6 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 const MarkdownRender = ({ markdownBody }) => {
   return (
     <ReactMarkdown
-      children={markdownBody}
       components={{
         code: ({ node, inline, className, children, ...props }) => {
           const match = /language-(\w+)/.exec(className || "");
@@ -37,7 +36,9 @@ const MarkdownRender = ({ markdownBody }) => {
           />
         ),
       }}
-    />
+    >
+      {markdownBody}
+    </ReactMarkdown>
   );
 };
 
