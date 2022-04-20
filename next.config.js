@@ -12,6 +12,10 @@ const nextConfig = {
       layers: true,
     };
 
+    config.node = {
+      fs: "empty",
+    };
+
     if (isServer) {
       return {
         ...config,
