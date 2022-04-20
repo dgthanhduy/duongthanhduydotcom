@@ -1,14 +1,12 @@
 import elasticlunr from "elasticlunr";
+import { cachedPostData } from "../lib/utils.js";
 require("../lib/lunr-languages/lunr.stemmer.support.js")(elasticlunr);
 require("../lib/lunr-languages/lunr.vi.js")(elasticlunr);
 require("../lib/lunr-languages/lunr.multi.js")(elasticlunr);
-import { cachedPostData } from "../lib/utils";
 
-// First step
-const blogContent = await cachedPostData("blog");
+function createBlogCache(filename, posts, fs) {
+  const blogContent = cachedPostData(posts);
 
-// Second step
-function createBlogCache(filename, fs) {
   let index = elasticlunr(function () {
     this.use(elasticlunr.multiLanguage("en", "vi"));
     this.setRef("slug");
