@@ -1,7 +1,9 @@
 import postIndex from "../../cache/blog.json";
 import elasticlunr from "elasticlunr";
 
-console.log(elasticlunr);
+require("../../lib/lunr-languages/lunr.stemmer.support.js")(elasticlunr);
+require("../../lib/lunr-languages/lunr.vi.js")(elasticlunr);
+require("../../lib/lunr-languages/lunr.multi.js")(elasticlunr);
 elasticlunr.multiLanguage("en", "vi");
 
 export default function handler(req, res) {
