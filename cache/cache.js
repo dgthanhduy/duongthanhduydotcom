@@ -2,14 +2,13 @@ import elasticlunr from "elasticlunr";
 require("../lib/lunr-languages/lunr.stemmer.support.js")(elasticlunr);
 require("../lib/lunr-languages/lunr.vi.js")(elasticlunr);
 require("../lib/lunr-languages/lunr.multi.js")(elasticlunr);
-import fs from "fs";
 import { cachedPostData } from "../lib/utils";
 
 // First step
 const blogContent = await cachedPostData("blog");
 
 // Second step
-function createBlogCache(filename) {
+function createBlogCache(filename, fs) {
   let index = elasticlunr(function () {
     this.use(elasticlunr.multiLanguage("en", "vi"));
     this.setRef("slug");
@@ -32,4 +31,4 @@ function createBlogCache(filename) {
   );
 }
 
-createBlogCache("blog");
+export default createBlogCache;
