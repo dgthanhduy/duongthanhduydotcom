@@ -21,7 +21,7 @@ function createBlogCache(filename) {
   });
 
   fs.writeFile(
-    `./cache/${filename}.json`,
+    `./public/indexes/${filename}.json`,
     JSON.stringify(index),
     function (err) {
       if (err) {
