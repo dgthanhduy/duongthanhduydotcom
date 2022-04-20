@@ -12,7 +12,7 @@ const blogContent = await cachedPostData("blog");
 function createBlogCache(filename) {
   let index = elasticlunr(function () {
     this.use(elasticlunr.multiLanguage("en", "vi"));
-    this.ref("slug");
+    this.setRef("slug");
     this.addField("title");
   });
 
