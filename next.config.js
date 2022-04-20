@@ -12,8 +12,9 @@ const nextConfig = {
       layers: true,
     };
 
-    config.node = {
-      fs: "empty",
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
     };
 
     if (isServer) {
