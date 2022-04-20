@@ -9,6 +9,7 @@ const nextConfig = {
     // Needed if your cache script is asynchronous
     config.experiments = {
       topLevelAwait: true,
+      layers: true,
     };
 
     if (isServer) {
