@@ -10,12 +10,11 @@ import { useCallback, useState, useEffect } from "react";
 let postIndexDump = null;
 
 const SearchForm = () => {
-  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isIndexing, setIsIndexing] = useState(true);
 
   useEffect(() => {
-    if (!postIndexDump) {
+    if (postIndexDump === null || postIndexDump === undefined) {
       fetch("/indexes/blog.json", {
         method: "GET",
         headers: {
@@ -31,25 +30,23 @@ const SearchForm = () => {
         .catch((e) => {
           console.log(e);
         });
+    } else {
+      setIsIndexing(false);
     }
   }, []);
 
-  const handleInputChange = useCallback(
-    (e) => {
-      const query = e.target.value;
-      setQuery(query);
-      if (query.length) {
-        const refResult = postIndexDump.search(query, {}) ?? [];
-        const results = refResult.map(({ ref }) =>
-          postIndexDump.documentStore.getDoc(ref)
-        );
-        setResults(results);
-      } else {
-        setResults([]);
-      }
-    },
-    [query]
-  );
+  const handleInputChange = useCallback((e) => {
+    const query = e.target.value;
+    if (query.length) {
+      const refResult = postIndexDump.search(query, {}) ?? [];
+      const results = refResult.map(({ ref }) =>
+        postIndexDump.documentStore.getDoc(ref)
+      );
+      setResults(results);
+    } else {
+      setResults([]);
+    }
+  }, []);
 
   return (
     <>
