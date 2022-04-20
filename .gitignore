@@ -15,6 +15,8 @@
 # production
 /build
 
+/public/indexes/blog.json
+
 # misc
 .DS_Store
 *.pem
