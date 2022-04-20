@@ -7,7 +7,6 @@ const fs = require("fs");
 
 function createBlogCache(filename, posts) {
   const blogContent = cachedPostData(posts);
-
   let index = elasticlunr(function () {
     this.use(elasticlunr.multiLanguage("en", "vi"));
     this.setRef("slug");

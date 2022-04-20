@@ -15,11 +15,11 @@ const Blog = ({ posts, title, description }) => {
   );
 };
 
-import makeCacheIndex from "../../cache/cache";
+// import makeCacheIndex from "../../cache/cache";
 
 export async function getStaticProps() {
   const posts = await getAllPostsWithFrontMatter("blog");
-  makeCacheIndex("blog", posts);
+  // makeCacheIndex("blog", posts);
 
   return {
     props: {

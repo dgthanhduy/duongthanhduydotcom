@@ -12,11 +12,11 @@ const nextConfig = {
       layers: true,
     };
 
-    if (!isServer)
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      };
+    // if (!isServer)
+    //   config.resolve.fallback = {
+    //     ...config.resolve.fallback,
+    //     fs: false,
+    //   };
 
     if (isServer) {
       return {
