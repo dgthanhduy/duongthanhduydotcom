@@ -15,8 +15,6 @@
 # production
 /build
 
-/public/indexes/blog.json
-
 # misc
 .DS_Store
 *.pem
@@ -32,3 +30,4 @@ yarn-error.log*
 
 # vercel
 .vercel
+public/indexes/blog.json
