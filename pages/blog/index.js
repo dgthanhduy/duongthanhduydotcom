@@ -4,6 +4,7 @@ import { getAllPostsWithFrontMatter } from "../../lib/utils";
 import SearchForm from "../../components/search/Form";
 
 const Blog = ({ posts, title, description }) => {
+  console.log("renderrrr");
   return (
     <BaseLayout title={title} description={description}>
       <main>

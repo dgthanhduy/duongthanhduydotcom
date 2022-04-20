@@ -1,21 +1,49 @@
-import { useCallback, useState } from "react";
+import elasticlunr from "elasticlunr";
 
-const SearchForm = (props) => {
+require("../../lib/lunr-languages/lunr.stemmer.support.js")(elasticlunr);
+require("../../lib/lunr-languages/lunr.vi.js")(elasticlunr);
+require("../../lib/lunr-languages/lunr.multi.js")(elasticlunr);
+elasticlunr.multiLanguage("en", "vi");
+
+import { useCallback, useState, useEffect } from "react";
+
+let postIndexDump = null;
+
+const SearchForm = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [isIndexing, setIsIndexing] = useState(true);
 
-  const searchEndpoint = (query) => `/api/search?q=${query}`;
+  useEffect(() => {
+    if (!postIndexDump) {
+      fetch("/indexes/blog.json", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          res.json().then((data) => {
+            postIndexDump = elasticlunr.Index.load(data);
+            setIsIndexing(false);
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, []);
 
   const handleInputChange = useCallback(
     (e) => {
       const query = e.target.value;
       setQuery(query);
       if (query.length) {
-        fetch(searchEndpoint(query))
-          .then((res) => res.json())
-          .then((res) => {
-            setResults(res.results);
-          });
+        const refResult = postIndexDump.search(query, {}) ?? [];
+        const results = refResult.map(({ ref }) =>
+          postIndexDump.documentStore.getDoc(ref)
+        );
+        setResults(results);
       } else {
         setResults([]);
       }
@@ -25,7 +53,7 @@ const SearchForm = (props) => {
 
   return (
     <>
-      <input onBlur={handleInputChange}></input>
+      <input disabled={isIndexing} onChange={handleInputChange}></input>
 
       <p>{JSON.stringify(results)}</p>
     </>
