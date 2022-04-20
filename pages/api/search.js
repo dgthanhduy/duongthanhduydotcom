@@ -15,5 +15,7 @@ export default function handler(req, res) {
     res.end(JSON.stringify({ results }));
   } catch (e) {
     console.log(e);
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ e }));
   }
 }
