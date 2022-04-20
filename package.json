@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "cache-posts": "node .next/server/cache.js",
-    "pre-commit": "yarn cache-posts && git add cache/blog.json",
+    "pre-commit": "yarn cache-posts && git add public/indexes/blog.json",
     "prepare": "husky install"
   },
   "dependencies": {
