@@ -2,6 +2,9 @@
     "name": "project-duongthanhduydotcom",
     "version": "0.1.0",
     "private": true,
+    "engines": {
+        "node": ">=14.18.0 <15"
+    },
     "scripts": {
         "dev": "node .next/server/postbuild.js && next dev",
         "build": "next build && node .next/server/postbuild.js",
