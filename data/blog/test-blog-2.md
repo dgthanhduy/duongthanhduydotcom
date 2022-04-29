@@ -5,6 +5,7 @@ publishedDate: 2022/04/12
 tags:
   - nextjs
   - react
+series: series-1
 ---
 
 # Heading H1

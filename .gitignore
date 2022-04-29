@@ -30,4 +30,6 @@ yarn-error.log*
 
 # vercel
 .vercel
-public/indexes/blog.json
+/public/indexes/blog.json
+/public/robots.txt
+/public/sitemap*.xml

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: true,
   reactStrictMode: true,
   compiler: {
     styledComponents: true,
@@ -12,11 +13,11 @@ const nextConfig = {
       layers: true,
     };
 
-    // if (!isServer)
-    //   config.resolve.fallback = {
-    //     ...config.resolve.fallback,
-    //     fs: false,
-    //   };
+    if (!isServer)
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
 
     if (isServer) {
       return {
@@ -25,7 +26,7 @@ const nextConfig = {
         entry() {
           return config.entry().then((entry) => {
             return Object.assign({}, entry, {
-              cache: "./lib/prebuild.js",
+              postbuild: "./lib/postbuild.ts",
             });
           });
         },
