@@ -4,10 +4,11 @@
     "private": true,
     "scripts": {
         "dev": "node .next/server/postbuild.js && next dev",
-        "build": "next build && node .next/server/postbuild.js",
+        "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "postbuild": "next-sitemap"
+        "postbuildfull": "next-sitemap node .next/server/postbuild.js",
+        "postbuild": "node .next/server/postbuild.js"
     },
     "prettier": {
         "bracketSpacing": true,
