@@ -6,14 +6,8 @@ declare global {
     }
 }
 
-import UserContextProvider from '../contexts/UserContextProvider';
-
 function MyApp({ Component, pageProps }) {
-    return (
-        <UserContextProvider>
-            <Component {...pageProps} />
-        </UserContextProvider>
-    );
+    return <Component {...pageProps} />;
 }
 
 export default MyApp;

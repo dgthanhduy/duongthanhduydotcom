@@ -11,11 +11,11 @@ function createBlogCache(filename: string, posts: Post[]) {
     let index = elasticlunr(function () {
         this.use(elasticlunr.multiLanguage('en', 'vi'));
         this.setRef('slug');
-        this.addField('title');
+        this.addField('searchable');
     });
 
     blogContent.forEach((post) => {
-        index.addDoc(post);
+        index.addDoc({ ...post, searchable: post.frontMatter.title });
     });
 
     fs.writeFile(

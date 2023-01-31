@@ -1,17 +1,12 @@
+import Logo from './Logo';
+import NavBar from './NavBar';
+
 const Header = () => {
     return (
         <>
-            <div className="mx-auto flex flex-auto max-w-4xl">
-                <div className="mx-auto flex flex-column justify-between content-between max-w-xl">
-                    <a>11</a>
-                    <a>22</a>
-                    <a>33</a>
-                </div>
-                <div className="">
-                    <a>11</a>
-                    <a>22</a>
-                    <a>33</a>
-                </div>
+            <div className="flex flex-wrap fixed top-0 bg-gray-100 dark:bg-gray-800 items-center justify-center md:justify-between w-screen py-2 px-12">
+                <Logo />
+                <NavBar />
             </div>
         </>
     );

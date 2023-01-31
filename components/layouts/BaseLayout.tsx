@@ -1,10 +1,6 @@
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
+import Footer from '../Footer';
 import Header from '../Header';
-
-const DarkModeToggle = dynamic(() => import('../DarkModeToggle'), {
-    ssr: false,
-});
 
 const BaseLayout = ({ title, description = '', children, pageType = null }) => {
     return (
@@ -18,10 +14,10 @@ const BaseLayout = ({ title, description = '', children, pageType = null }) => {
                 <link rel="icon" href="/favicon.ico" />
                 <title>{title}</title>
             </Head>
-            {pageType !== 'post' && <DarkModeToggle />}
-            <div className="root">
+            <div className="root flex flex-col overflow-x-hidden">
                 <Header />
-                {children}
+                <div className="flex-grow mt-16 px-3 lg:py-0">{children}</div>
+                <Footer />
             </div>
         </>
     );

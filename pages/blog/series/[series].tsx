@@ -1,8 +1,8 @@
 import BlogPosts from '../../../components/blog/BlogPosts';
 import BaseLayout from '../../../components/layouts/BaseLayout';
-import { getAllPostsWithFrontMatter, getTags } from '../../../lib/utils';
+import { getAllPostsWithFrontMatter, getSeries } from '../../../lib/utils';
 
-const BlogTag = ({ posts, title, description }) => {
+const SeriesPosts = ({ posts, title, description }) => {
     return (
         <BaseLayout title={title} description={description}>
             <main className="mx-auto max-w-5xl">
@@ -13,24 +13,26 @@ const BlogTag = ({ posts, title, description }) => {
 };
 
 export async function getStaticProps({ params }) {
-    const posts = await getAllPostsWithFrontMatter('blog', { tag: params.tag });
+    const posts = await getAllPostsWithFrontMatter('blog', {
+        series: params.series,
+    });
 
     return {
         props: {
             posts,
-            title: `Blog Posts - ${params.tag}`,
-            description: `Posts on software engineering for tag ${params.tag}`,
-            tag: params.tag,
+            title: `Blog Posts - ${params.series}`,
+            description: `Posts on software engineering for tag ${params.series}`,
+            tag: params.series,
         },
     };
 }
 
 export async function getStaticPaths() {
-    const tags = await getTags('blog');
+    const series = await getSeries('blog');
 
-    const paths = tags.map((tag) => ({
+    const paths = series.map((series) => ({
         params: {
-            tag,
+            series,
         },
     }));
 
@@ -40,4 +42,4 @@ export async function getStaticPaths() {
     };
 }
 
-export default BlogTag;
+export default SeriesPosts;

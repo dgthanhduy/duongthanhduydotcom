@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { Post, PostFilters } from '../types';
+import { Post, PostFilters, PostFrontMatter } from '../types';
+
+import seriesData from '../data/series/series.json';
+
 const root = process.cwd();
 
 export async function getFiles(dataType: string) {
@@ -17,12 +20,18 @@ export async function getPostBySlug(
         'utf8',
     );
 
-    const { data, content } = matter(source);
+    let { data, content } = matter(source);
+    data.series = data.series + '';
+    const seriesFrontMatter = seriesData[data.series];
 
     return {
-        frontMatter: data,
+        frontMatter: { ...data },
         slug: slug,
         markdownBody: content,
+        series: {
+            frontMatter: seriesFrontMatter,
+            slug: data.series,
+        },
     };
 }
 
@@ -37,8 +46,9 @@ export async function getAllPostsWithFrontMatter(
             path.join(root, 'data', dataType, postSlug),
             'utf8',
         );
-        const { data } = matter(source);
-
+        let { data } = matter(source);
+        data.series = data.series + '';
+        const seriesFrontMatter = seriesData[data.series];
         if (filters) {
             if (filters.tag) {
                 //* Filter by tag here
@@ -47,6 +57,10 @@ export async function getAllPostsWithFrontMatter(
                         {
                             frontMatter: data,
                             slug: postSlug.replace('.md', ''),
+                            series: {
+                                frontMatter: seriesFrontMatter,
+                                slug: data.series,
+                            },
                         },
                         ...allPosts,
                     ];
@@ -62,6 +76,10 @@ export async function getAllPostsWithFrontMatter(
                         {
                             frontMatter: data,
                             slug: postSlug.replace('.md', ''),
+                            series: {
+                                frontMatter: seriesFrontMatter,
+                                slug: data.series,
+                            },
                         },
                         ...allPosts,
                     ];
@@ -75,6 +93,10 @@ export async function getAllPostsWithFrontMatter(
             {
                 frontMatter: data,
                 slug: postSlug.replace('.md', ''),
+                series: {
+                    frontMatter: seriesFrontMatter,
+                    slug: data.series,
+                },
             },
             ...allPosts,
         ];
@@ -98,23 +120,33 @@ export async function getTags(dataType: string) {
     return Array.from(allTags);
 }
 
+export async function getSeries(dataType: string) {
+    let allSeries = new Set<string>();
+    Object.keys(seriesData).forEach((slug) => {
+        if (slug !== 'undefined') allSeries.add(slug);
+    });
+    return Array.from(allSeries);
+}
+
 export async function getSameSeriesPosts(dataType: string, series: string) {
     return await getAllPostsWithFrontMatter(dataType, { series: series });
 }
 
-export function cachedPostData(posts: Post[]) {
-    return posts.map((post) => ({
-        slug: post.slug,
-        title: post.frontMatter.title,
-        tags: post.frontMatter.tags ?? [],
-        publishedDate: post.frontMatter.publishedDate ?? null,
-        image: post.frontMatter.image ?? null,
-    }));
+export function cachedPostData(posts: Post[]): Post[] {
+    return posts.map(
+        (post): Post => ({
+            slug: post.slug,
+            frontMatter: {
+                title: post.frontMatter.title,
+                publishedDate: post.frontMatter.publishedDate ?? null,
+            },
+        }),
+    );
 }
 
 /// !!
 
-export const htmlEscaper = (unsafe: string) => {
+export const htmlEscaper = (unsafe: string): string => {
     return unsafe
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -123,7 +155,7 @@ export const htmlEscaper = (unsafe: string) => {
         .replace(/'/g, '&#039;');
 };
 
-export const slugify = (string: string) => {
+export const slugify = (string: string): string => {
     return string
         .toLowerCase()
         .replace(/[^\w ]+/g, '')

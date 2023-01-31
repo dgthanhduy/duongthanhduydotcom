@@ -4,7 +4,7 @@ export default function Document() {
     return (
         <Html>
             <Head></Head>
-            <body>
+            <body className="root">
                 <script src="/noflash.js" />
                 <Main />
                 <NextScript />

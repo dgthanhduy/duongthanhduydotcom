@@ -5,11 +5,13 @@ require('../lib/lunr-languages/lunr.multi.js')(elasticlunr);
 elasticlunr.multiLanguage('en', 'vi');
 
 import { useState, useEffect } from 'react';
+import { Post } from '../types';
 
 let postIndexDump = null;
+const defaultResults: Post[] = [];
 
 const usePostSearch = () => {
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState(defaultResults);
     const [isIndexing, setIsIndexing] = useState(true);
 
     const [query, setQuery] = useState('');

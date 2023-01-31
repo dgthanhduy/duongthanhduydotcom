@@ -1,29 +1,49 @@
-import CommentForm from '../../components/comment/Form';
-import CommentList from '../../components/comment/List';
+import PostMetaData from '../../components/blog/PostMetaData';
+import Comment from '../../components/comment';
 import BaseLayout from '../../components/layouts/BaseLayout';
 import MarkdownRender from '../../components/MarkdownRender';
+import Divider from '../../components/shared/Divider';
 import { getFiles, getPostBySlug, getSameSeriesPosts } from '../../lib/utils';
-import { Post } from '../../types';
+import { Post, PostFrontMatter, Series } from '../../types';
 
-const BlogPost = ({ frontMatter, markdownBody, slug, sameSeriesPosts }) => {
+type props = {
+    frontMatter: PostFrontMatter;
+    markdownBody: any;
+    slug: string;
+    sameSeriesPosts: Post[];
+    series: Series;
+};
+
+const BlogPost = ({
+    frontMatter,
+    markdownBody,
+    slug,
+    sameSeriesPosts,
+    series,
+}: props) => {
     if (!frontMatter) return <></>;
-
     return (
         <BaseLayout title={frontMatter.title} description="123" pageType="post">
-            <div className="container mx-auto max-w-3xl">
-                <h1>{frontMatter.title}</h1>
-                <p>{JSON.stringify(sameSeriesPosts)}</p>
-                <CommentList slug={slug} />
-                <CommentForm slug={slug} />
-                <br />
+            <div className="container mx-auto max-w-3xl ">
+                <h1 className="font-semibold">{frontMatter.title}</h1>
+                <PostMetaData
+                    post={{
+                        slug: slug,
+                        series: series,
+                        frontMatter: frontMatter,
+                    }}
+                />
+                <Divider />
                 <MarkdownRender markdownBody={markdownBody} />
+                <Divider caption="Comments" />
+                <Comment />
             </div>
         </BaseLayout>
     );
 };
 
 export async function getStaticProps({ params }) {
-    const { frontMatter, markdownBody } = await getPostBySlug(
+    const { frontMatter, markdownBody, series } = await getPostBySlug(
         'blog',
         params.slug,
     );
@@ -38,6 +58,7 @@ export async function getStaticProps({ params }) {
             frontMatter,
             markdownBody,
             sameSeriesPosts,
+            series,
             slug: params.slug,
         },
     };
