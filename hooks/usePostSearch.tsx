@@ -42,7 +42,10 @@ const usePostSearch = () => {
 
     useEffect(() => {
         if (query.length) {
-            const refResult = postIndexDump.search(query, {}) ?? [];
+            const refResult = postIndexDump.search(query, {
+                bool : "AND",
+                expand : true
+            }) ?? [];
             const results = refResult.map(({ ref }) =>
                 postIndexDump.documentStore.getDoc(ref),
             );

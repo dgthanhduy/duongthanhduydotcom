@@ -33,3 +33,5 @@ yarn-error.log*
 /public/indexes/blog.json
 /public/robots.txt
 /public/sitemap*.xml
+package-lock.json
+yarn.lock
